@@ -19,3 +19,6 @@ def collection_products(request, cid):
         "products": products
     }
     return render(request, "products_by_catagory.html", context)
+def product_detail(request, pid):
+    product = get_object_or_404(Products, id=pid, status=0)
+    return render(request, "product_detail.html", {"product": product})
