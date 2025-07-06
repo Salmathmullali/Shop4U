@@ -17,7 +17,7 @@
             <p><strong>Price: ₹{{ product.selling_price }}</strong> 
                 <span class="text-muted text-decoration-line-through">₹{{ product.original_price }}</span></p>
             <p>{{ product.description }}</p>
-            <button class="btn btn-success w-100">Add to Cart</button>
+            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success w-100">Add to Cart</a>
         </div>
     </div>
 </div>

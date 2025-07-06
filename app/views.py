@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 
 def home(request):
@@ -22,3 +22,46 @@ def collection_products(request, cid):
 def product_detail(request, pid):
     product = get_object_or_404(Products, id=pid, status=0)
     return render(request, "product_detail.html", {"product": product})
+def add_to_cart(request, pid):
+    product = get_object_or_404(Products, id=pid)
+
+    cart = request.session.get('cart', {})
+
+    if str(pid) in cart:
+        cart[str(pid)] += 1
+    else:
+        cart[str(pid)] = 1
+
+    request.session['cart'] = cart
+    return redirect('view_cart')
+
+
+def view_cart(request):
+    cart = request.session.get('cart', {})
+    items = []
+    total = 0
+
+    for pid, qty in cart.items():
+        product = get_object_or_404(Products, id=pid)
+        subtotal = product.selling_price * qty
+        items.append({
+            "product": product,
+            "qty": qty,
+            "subtotal": subtotal
+        })
+        total += subtotal
+
+    context = {
+        "items": items,
+        "total": total
+    }
+    return render(request, "add_to_cart.html", context)
+
+def remove_from_cart(request, pid):
+    cart = request.session.get('cart', {})
+    
+    if str(pid) in cart:
+        del cart[str(pid)]
+        request.session['cart'] = cart
+
+    return redirect('view_cart')
