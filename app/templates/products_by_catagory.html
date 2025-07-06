@@ -37,6 +37,13 @@
             <div class="product-card">
                 <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="product-img mb-3">
                 <h5>{{ product.name }}</h5>
+                <a href="#" class="wishlist-btn" data-id="{{ product.id }}">
+        {% if product.id in wishlist %}
+            <span id="heart-{{ product.id }}" class="text-danger">❤️</span>
+        {% else %}
+            <span id="heart-{{ product.id }}" class="text-muted">🤍</span>
+        {% endif %}
+    </a>
                 <p class="text-muted">{{ product.description|truncatewords:20 }}</p>
                 <p>Price: ₹{{ product.selling_price }}</p>
                 <p>Vendor: {{ product.vendor }}</p>
@@ -48,5 +55,31 @@
         {% endfor %}
     </div>
 </div>
+
+
+<script>
+document.querySelectorAll('.wishlist-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const pid = this.dataset.id;
+
+        fetch(`/toggle-wishlist/${pid}/`)
+        .then(res => res.json())
+        .then(data => {
+            const heart = document.getElementById(`heart-${pid}`);
+            if (data.action === 'added') {
+                heart.innerText = '❤️';
+                heart.classList.remove('text-muted');
+                heart.classList.add('text-danger');
+            } else {
+                heart.innerText = '🤍';
+                heart.classList.remove('text-danger');
+                heart.classList.add('text-muted');
+            }
+        });
+    });
+});
+</script>
+
 </body>
 </html>
