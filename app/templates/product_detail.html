@@ -24,5 +24,17 @@
         </div>
     </div>
 </div>
+{% if user.is_authenticated and can_review %}
+  <h5>Leave a Review</h5>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-success" type="submit">Submit</button>
+  </form>
+{% else %}
+  {% if user.is_authenticated %}
+    <p class="text-muted">You can only review products you've purchased.</p>
+  {% endif %}
+{% endif %}
 </body>
 </html>

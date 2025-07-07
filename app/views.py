@@ -22,9 +22,43 @@ def collection_products(request, cid):
         "wishlist": wishlist
     }
     return render(request, "products_by_catagory.html", context)
+# views.py
 def product_detail(request, pid):
-    product = get_object_or_404(Products, id=pid, status=0)
-    return render(request, "product_detail.html", {"product": product})
+    product = get_object_or_404(Products, id=pid)
+    reviews = ProductReview.objects.filter(product=product)
+    form = None
+    can_review = False
+
+    if request.user.is_authenticated:
+        # Check if this user bought this product
+        has_bought = OrderItem.objects.filter(
+            order__user=request.user,
+            order__is_completed=True,
+            product=product
+        ).exists()
+
+        if has_bought:
+            can_review = True
+            form = ReviewForm()
+
+            if request.method == "POST":
+                form = ReviewForm(request.POST, request.FILES)
+                if form.is_valid():
+                    review = form.save(commit=False)
+                    review.user = request.user
+                    review.product = product
+                    review.save()
+                    return redirect('product_detail', pid=product.id)
+
+    context = {
+        "product": product,
+        "form": form,
+        "reviews": reviews,
+        "can_review": can_review,
+    }
+    return render(request, "product_detail.html", context)
+
+
 def add_to_cart(request, pid):
     product = get_object_or_404(Products, id=pid)
 
