@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from .forms import CheckoutForm
 from .models import *
 
 def home(request):
@@ -39,10 +40,10 @@ def product_detail(request, pid):
 
         if has_bought:
             can_review = True
-            form = ReviewForm()
+            form = ProductReview()
 
             if request.method == "POST":
-                form = ReviewForm(request.POST, request.FILES)
+                form = ProductReview(request.POST, request.FILES)
                 if form.is_valid():
                     review = form.save(commit=False)
                     review.user = request.user
@@ -127,3 +128,54 @@ def toggle_wishlist(request, pid):
 
     request.session['wishlist'] = wishlist
     return JsonResponse({'status': 'ok', 'action': action})
+
+
+def checkout_view(request):
+    cart = request.session.get('cart', {})
+    if not cart:
+        return redirect('view_cart')
+
+    items = []
+    total = 0
+
+    for pid, qty in cart.items():
+        product = get_object_or_404(Products, id=pid)
+        subtotal = product.selling_price * qty
+        items.append({
+            "product": product,
+            "qty": qty,
+            "subtotal": subtotal
+        })
+        total += subtotal
+
+    form = CheckoutForm()
+
+    if request.method == "POST":
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            order = Order.objects.create(
+                user=request.user,
+                full_name=form.cleaned_data['full_name'],
+                phone=form.cleaned_data['phone'],
+                address=form.cleaned_data['address'],
+                total_price=total,
+                payment_method="COD"
+            )
+
+            for item in items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=item["product"],
+                    quantity=item["qty"],
+                    price=item["product"].selling_price
+                )
+
+            # Clear cart
+            request.session['cart'] = {}
+            return redirect('order_success')  # You need to create this URL and template
+
+    return render(request, "checkout.html", {
+        "form": form,
+        "cart_items": items,
+        "total": total
+    })

@@ -12,7 +12,9 @@ urlpatterns= [
      path("remove-from-cart/<int:pid>/", views.remove_from_cart, name="remove_from_cart"),
      path("add-to-wishlist/<int:pid>/", views.add_to_wishlist, name="add_to_wishlist"),
      path("wishlist/", views.view_wishlist, name="view_wishlist"),
-     path("toggle-wishlist/<int:pid>/", views.toggle_wishlist, name="toggle_wishlist")
+     path("toggle-wishlist/<int:pid>/", views.toggle_wishlist, name="toggle_wishlist"),
+     path("checkout/", views.checkout_view, name="checkout_view")
+
 
 
 ]

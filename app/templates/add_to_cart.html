@@ -29,6 +29,9 @@
     <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-danger btn-sm">Remove</a>
 </td>
 
+<td>
+    <a href="{% url 'checkout_view' %}" class="btn btn-primary">Buy Now</a>
+</td>
             </tr>
             {% endfor %}
             <tr>
