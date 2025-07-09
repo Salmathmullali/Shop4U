@@ -133,10 +133,10 @@ def toggle_wishlist(request, pid):
 def checkout_view(request):
     cart = request.session.get('cart', {})
     if not cart:
-        return redirect('view_cart')
+        return redirect('view_cart')  # If cart is empty, go back
 
     items = []
-    total = 0
+    total_price = 0
 
     for pid, qty in cart.items():
         product = get_object_or_404(Products, id=pid)
@@ -146,10 +146,9 @@ def checkout_view(request):
             "qty": qty,
             "subtotal": subtotal
         })
-        total += subtotal
+        total_price += subtotal
 
     form = CheckoutForm()
-
     if request.method == "POST":
         form = CheckoutForm(request.POST)
         if form.is_valid():
@@ -158,8 +157,9 @@ def checkout_view(request):
                 full_name=form.cleaned_data['full_name'],
                 phone=form.cleaned_data['phone'],
                 address=form.cleaned_data['address'],
-                total_price=total,
-                payment_method="COD"
+                total_price=total_price,
+                payment_method="COD",
+                is_completed=True
             )
 
             for item in items:
@@ -170,12 +170,13 @@ def checkout_view(request):
                     price=item["product"].selling_price
                 )
 
-            # Clear cart
-            request.session['cart'] = {}
-            return redirect('order_success')  # You need to create this URL and template
+            request.session['cart'] = {}  # Clear cart after order
+            return redirect('order_success')
 
     return render(request, "checkout.html", {
         "form": form,
         "cart_items": items,
-        "total": total
+        "total": total_price
     })
+def order_success(request):
+    return render(request, "order_success.html")
