@@ -1,0 +1,10 @@
+<h2>My Delivered Orders</h2>
+{% for order in orders %}
+    <h4>Order #{{ order.id }}</h4>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.product.name }} - Qty: {{ item.quantity }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'product_detail' item.product.id %}">Review this product</a>
+{% endfor %}

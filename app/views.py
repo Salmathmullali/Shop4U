@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .forms import CheckoutForm
 from .models import *
-
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 def home(request):
     return render(request, "index.html")
 
@@ -33,9 +34,10 @@ def product_detail(request, pid):
     if request.user.is_authenticated:
         # Check if this user bought this product
         has_bought = OrderItem.objects.filter(
-            order__user=request.user,
-            order__is_completed=True,
-            product=product
+        order__user=request.user,
+        order__is_completed=True,
+        order__delivered=True,  # ✅ only allow review after delivery
+        product=product
         ).exists()
 
         if has_bought:
@@ -180,3 +182,19 @@ def checkout_view(request):
     })
 def order_success(request):
     return render(request, "order_success.html")
+@staff_member_required
+def delivery_dashboard(request):
+    orders = Order.objects.filter(is_completed=True, delivered=False)
+    return render(request, "delivery_dashboard.html", {"orders": orders})
+
+@staff_member_required
+def mark_delivered(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.delivered = True
+    order.save()
+    return redirect('delivery_dashboard')
+
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user, delivered=True)
+    return render(request, "my_orders.html", {"orders": orders})

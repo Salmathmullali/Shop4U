@@ -47,20 +47,22 @@ class ProductReview(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100, default="Unknown")
-    phone = models.CharField(max_length=15, default="")  # Add default
+    phone = models.CharField(max_length=15)
     address = models.TextField(default='N/A')
-    total_price = models.FloatField(default=0.0)  # Add default
+    total_price = models.FloatField()
     payment_method = models.CharField(max_length=20, default="COD")  # COD or Online
     is_completed = models.BooleanField(default=False)
+    delivered = models.BooleanField(default=False)  
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Order #{self.id} - {self.user.username}"
+        return f"Order #{self.id} by {self.user.username}"
+    
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)  # Add default
-    price = models.FloatField(default=0.0)      # Add default
+    quantity = models.IntegerField(default=1)  
+    price = models.FloatField(default=0.0)      
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"

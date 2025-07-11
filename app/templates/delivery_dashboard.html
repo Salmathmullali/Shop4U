@@ -1,0 +1,17 @@
+<h2>Pending Deliveries</h2>
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Total</th>
+        <th>Action</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>₹{{ order.total_price }}</td>
+        <td><a href="{% url 'mark_delivered' order.id %}">Mark as Delivered</a></td>
+    </tr>
+    {% endfor %}
+</table>
