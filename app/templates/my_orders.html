@@ -3,8 +3,11 @@
     <h4>Order #{{ order.id }}</h4>
     <ul>
         {% for item in order.items.all %}
-            <li>{{ item.product.name }} - Qty: {{ item.quantity }}</li>
+            <li>
+                {{ item.product.name }} - Qty: {{ item.quantity }}
+                <a href="{% url 'product_detail' item.product.id %}">Review this product</a>
+            </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'product_detail' item.product.id %}">Review this product</a>
 {% endfor %}
+

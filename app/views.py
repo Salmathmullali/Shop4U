@@ -4,6 +4,8 @@ from .forms import CheckoutForm
 from .models import *
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from .forms import ReviewForm
+from django.db.models import Avg
 def home(request):
     return render(request, "index.html")
 
@@ -28,16 +30,18 @@ def collection_products(request, cid):
 def product_detail(request, pid):
     product = get_object_or_404(Products, id=pid)
     reviews = ProductReview.objects.filter(product=product)
+    
+    avg_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+    avg_rating = round(avg_rating, 1)  # Optional: round to 1 decimal
+
     form = None
     can_review = False
 
     if request.user.is_authenticated:
-        # Check if this user bought this product
         has_bought = OrderItem.objects.filter(
-        order__user=request.user,
-        order__is_completed=True,
-        order__delivered=True,  # ✅ only allow review after delivery
-        product=product
+            order__user=request.user,
+            order__is_completed=True,
+            product=product
         ).exists()
 
         if has_bought:
@@ -45,7 +49,7 @@ def product_detail(request, pid):
             form = ProductReview()
 
             if request.method == "POST":
-                form = ProductReview(request.POST, request.FILES)
+                form = ProductReview(request.POST)
                 if form.is_valid():
                     review = form.save(commit=False)
                     review.user = request.user
@@ -58,6 +62,7 @@ def product_detail(request, pid):
         "form": form,
         "reviews": reviews,
         "can_review": can_review,
+        "avg_rating": avg_rating,  # 👉 PASSING IT TO TEMPLATE
     }
     return render(request, "product_detail.html", context)
 
@@ -182,19 +187,19 @@ def checkout_view(request):
     })
 def order_success(request):
     return render(request, "order_success.html")
-@staff_member_required
+#@staff_member_required
 def delivery_dashboard(request):
     orders = Order.objects.filter(is_completed=True, delivered=False)
     return render(request, "delivery_dashboard.html", {"orders": orders})
 
-@staff_member_required
+#@staff_member_required
 def mark_delivered(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.delivered = True
     order.save()
     return redirect('delivery_dashboard')
 
-@login_required
+#@login_required
 def my_orders(request):
     orders = Order.objects.filter(user=request.user, delivered=True)
     return render(request, "my_orders.html", {"orders": orders})
