@@ -6,6 +6,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from .forms import ReviewForm
 from django.db.models import Avg
+from django.db.models import Q
+from django.http import JsonResponse
 def home(request):
     return render(request, "index.html")
 
@@ -18,12 +20,31 @@ def collections(request):
 def collection_products(request, cid):
     catagory = get_object_or_404(Catagory, id=cid, status=0)
     products = Products.objects.filter(catagory=catagory, status=0)
+
+    # Sort filter
+    sort_by = request.GET.get('sort')
+    if sort_by == 'low_to_high':
+        products = products.order_by('selling_price')
+    elif sort_by == 'high_to_low':
+        products = products.order_by('-selling_price')
+
+    # Price range filter
+    price_filter = request.GET.get('price')
+    if price_filter == 'below_100':
+        products = products.filter(selling_price__lt=100)
+    elif price_filter == '100_500':
+        products = products.filter(selling_price__gte=100, selling_price__lte=500)
+    elif price_filter == 'above_1000':
+        products = products.filter(selling_price__gt=1000)
+
     wishlist = request.session.get('wishlist', [])
 
     context = {
         "catagory": catagory,
         "products": products,
-        "wishlist": wishlist
+        "wishlist": wishlist,
+        "sort_by": sort_by,
+        "price_filter": price_filter,
     }
     return render(request, "products_by_catagory.html", context)
 # views.py
@@ -203,3 +224,49 @@ def mark_delivered(request, order_id):
 def my_orders(request):
     orders = Order.objects.filter(user=request.user, delivered=True)
     return render(request, "my_orders.html", {"orders": orders})
+
+def search_products(request):
+    query = request.GET.get('q', '')
+    results = []
+
+    if query:
+        category_matches = Catagory.objects.filter(name__icontains=query)
+        product_matches = Products.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(vendor__icontains=query)
+        )
+
+        if category_matches.exists():
+            results = Products.objects.filter(catagory__in=category_matches)
+        elif product_matches.exists():
+            results = product_matches
+
+    return render(request, 'search_results.html', {"products": results, "query": query})
+
+
+def live_search(request):
+    query = request.GET.get("term", "")
+    suggestions = []
+
+    if query:
+        product_matches = Products.objects.filter(name__icontains=query)[:10]
+        category_matches = Catagory.objects.filter(name__icontains=query)[:5]
+
+        for p in product_matches:
+            suggestions.append({
+                "label": p.name,
+                "value": p.name,
+                "image": p.product_image.url,
+                "url": f"/product/{p.id}/"
+            })
+
+        for c in category_matches:
+            suggestions.append({
+                "label": f"Category: {c.name}",
+                "value": c.name,
+                "image": "",  # or optional category image
+                "url": f"/collections/{c.id}/"
+            })
+
+    return JsonResponse(suggestions, safe=False)

@@ -29,6 +29,26 @@
     </style>
 </head>
 <body>
+        <form method="get" class="mb-3 row">
+    <!-- <div class="col-md-3">
+        <label>Sort by Price:</label>
+        <select name="sort" onchange="this.form.submit()" class="form-select">
+            <option value="">Default</option>
+            <option value="low_to_high" {% if sort_by == 'low_to_high' %}selected{% endif %}>Low to High</option>
+            <option value="high_to_low" {% if sort_by == 'high_to_low' %}selected{% endif %}>High to Low</option>
+        </select>
+    </div> -->
+
+    <div class="col-md-3">
+        <label>Price Range:</label>
+        <select name="price" onchange="this.form.submit()" class="form-select">
+            <option value="">All</option>
+            <option value="below_100" {% if price_filter == 'below_100' %}selected{% endif %}>Below ₹100</option>
+            <option value="100_500" {% if price_filter == '100_500' %}selected{% endif %}>₹100 - ₹500</option>
+            <option value="above_1000" {% if price_filter == 'above_1000' %}selected{% endif %}>Above ₹1000</option>
+        </select>
+    </div>
+</form>
 <div class="container">
     <h2 class="text-center mb-4">{{ catagory.name }} Products</h2>
     <div class="row">

@@ -17,7 +17,9 @@ urlpatterns= [
     path("order_success/", views.order_success, name="order_success"),
     path("delivery/", views.delivery_dashboard, name="delivery_dashboard"),
     path("delivery/mark/<int:order_id>/", views.mark_delivered, name="mark_delivered"),
-    path("my_orders/", views.my_orders, name="my_orders")
+    path("my_orders/", views.my_orders, name="my_orders"),
+    path("search/", views.search_products, name="search_products"),
+    path("live-search/", views.live_search, name="live_search")
 
 
 
