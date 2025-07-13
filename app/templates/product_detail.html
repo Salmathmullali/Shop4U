@@ -12,15 +12,38 @@
         .gray-star {
             color: lightgray;
         }
+        .carousel-inner img {
+            max-height: 400px;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
-
 <div class="container py-5">
-    <div class="row mb-4">
+    <div class="row">
+        <!-- 🖼️ Product Images -->
         <div class="col-md-6">
-            <img src="{{ product.product_image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+            <div id="productCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ product.product_image.url }}" class="d-block w-100 rounded" alt="{{ product.name }}">
+                    </div>
+                    {% for img in images %}
+                    <div class="carousel-item">
+                        <img src="{{ img.image.url }}" class="d-block w-100 rounded" alt="Additional Image">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
         </div>
+
+        <!-- 📦 Product Info -->
         <div class="col-md-6">
             <h2>{{ product.name }}</h2>
             <p class="text-muted">Vendor: {{ product.vendor }}</p>
@@ -36,7 +59,7 @@
 
     <!-- ⭐ Average Rating -->
     {% if reviews %}
-        <h5>Average Rating:</h5>
+        <h5 class="mt-4">Average Rating:</h5>
         <div class="star-rating mb-3">
             {% for i in "12345" %}
                 {% if forloop.counter <= avg_rating %}
@@ -86,5 +109,8 @@
         <p class="text-muted">You can only review products you've purchased.</p>
     {% endif %}
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

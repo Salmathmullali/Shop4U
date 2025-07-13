@@ -48,12 +48,15 @@ def collection_products(request, cid):
     }
     return render(request, "products_by_catagory.html", context)
 # views.py
+from django.db.models import Avg
+
 def product_detail(request, pid):
     product = get_object_or_404(Products, id=pid)
     reviews = ProductReview.objects.filter(product=product)
-    
+    images = product.images.all()  # ← Add this line
+
     avg_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
-    avg_rating = round(avg_rating, 1)  # Optional: round to 1 decimal
+    avg_rating = round(avg_rating, 1)
 
     form = None
     can_review = False
@@ -83,7 +86,8 @@ def product_detail(request, pid):
         "form": form,
         "reviews": reviews,
         "can_review": can_review,
-        "avg_rating": avg_rating,  # 👉 PASSING IT TO TEMPLATE
+        "avg_rating": avg_rating,
+        "images": images,  # ← Add this to pass to template
     }
     return render(request, "product_detail.html", context)
 

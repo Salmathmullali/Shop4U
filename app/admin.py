@@ -1,11 +1,15 @@
 from django.contrib import admin
-from .models import *
-from .models import ProductReview
+from .models import Catagory, Products, ProductReview, ProductImage
 
-# class CatagoryAdmin(admin.ModelAdmin):
-#     list_display = ('name','image','description')
 admin.site.register(Catagory)
-admin.site.register(Products)
 admin.site.register(ProductReview)
+
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1
+
+@admin.register(Products)
+class ProductsAdmin(admin.ModelAdmin):
+    inlines = [ProductImageInline]
 
 # Register your models here.

@@ -66,3 +66,10 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to=getFileName, null=True, blank=True)
+
+    def __str__(self):
+        return f"Image of {self.product.name}"
