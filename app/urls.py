@@ -19,7 +19,13 @@ urlpatterns= [
     path("delivery/mark/<int:order_id>/", views.mark_delivered, name="mark_delivered"),
     path("my_orders/", views.my_orders, name="my_orders"),
     path("search/", views.search_products, name="search_products"),
-    path("live-search/", views.live_search, name="live_search")
+    path("live-search/", views.live_search, name="live_search"),
+     path('register/', views.register_view, name="register"),
+    path('login/', views.login_view, name="login"),
+    path('logout/', views.logout_view, name="logout"),
+    path('user-dashboard/', views.user_dashboard, name='user_dashboard'),
+    path('staff-dashboard/', views.staff_dashboard, name='staff_dashboard'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard')
 
 
 

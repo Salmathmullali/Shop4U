@@ -4,10 +4,11 @@ from .forms import CheckoutForm
 from .models import *
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from .forms import ReviewForm
+from .forms import ReviewForm, RegisterForm
 from django.db.models import Avg
 from django.db.models import Q
-from django.http import JsonResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 def home(request):
     return render(request, "index.html")
 
@@ -274,3 +275,51 @@ def live_search(request):
             })
 
     return JsonResponse(suggestions, safe=False)
+
+def register_view(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            messages.success(request, "Registration successful. Please log in.")
+            return redirect('login')
+    else:
+        form = RegisterForm()
+    return render(request, "auth/register.html", {"form": form})
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            if user.is_superuser:
+                return redirect('admin_dashboard')
+            elif user.is_staff:
+                return redirect('staff_dashboard')
+            else:
+                return redirect('user_dashboard')
+        else:
+            messages.error(request, "Invalid credentials")
+    return render(request, "auth/login.html")
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+@login_required
+def user_dashboard(request):
+    return render(request, "dashboard/user.html")
+
+@login_required
+def staff_dashboard(request):
+    return render(request, "dashboard/staff.html")
+
+@login_required
+def admin_dashboard(request):
+    return render(request, "dashboard/admin.html")
