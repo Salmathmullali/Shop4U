@@ -9,6 +9,11 @@ from django.db.models import Avg
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.http import require_POST
+from django.shortcuts import redirect
+from django.db.models import Prefetch
+
 def home(request):
     return render(request, "index.html")
 
@@ -227,7 +232,14 @@ def mark_delivered(request, order_id):
 
 #@login_required
 def my_orders(request):
-    orders = Order.objects.filter(user=request.user, delivered=True)
+    if not request.user.is_authenticated:
+        return render(request, "error.html", {"message": "Login required to view this page."})
+
+    delivered_items = OrderItem.objects.filter(delivery_status="Delivered")
+    orders = Order.objects.filter(user=request.user).prefetch_related(
+        Prefetch("items", queryset=delivered_items)
+    ).distinct()
+
     return render(request, "my_orders.html", {"orders": orders})
 
 def search_products(request):
@@ -305,7 +317,7 @@ def login_view(request):
                 return redirect('user_dashboard')
         else:
             messages.error(request, "Invalid credentials")
-    return render(request, "auth/login.html")
+    return render(request, "login.html")
 
 @login_required
 def logout_view(request):
@@ -316,10 +328,19 @@ def logout_view(request):
 def user_dashboard(request):
     return render(request, "dashboard/user.html")
 
-@login_required
+# @staff_member_required
 def staff_dashboard(request):
-    return render(request, "dashboard/staff.html")
+    orders = Order.objects.all().order_by('-created_at')
+    return render(request, "staff_dashboard.html", {"orders": orders})
 
 @login_required
 def admin_dashboard(request):
     return render(request, "dashboard/admin.html")
+
+@require_POST
+# @staff_member_required
+def update_delivery_status(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.is_completed = True
+    order.save()
+    return redirect('staff_dashboard')

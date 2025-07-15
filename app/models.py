@@ -61,11 +61,19 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)  
-    price = models.FloatField(default=0.0)      
+    quantity = models.IntegerField()
+    price = models.FloatField()
+    
+    DELIVERY_CHOICES = [
+        ("Processing", "Processing"),
+        ("Dispatched", "Dispatched"),
+        ("Out for Delivery", "Out for Delivery"),
+        ("Delivered", "Delivered"),
+    ]
+    delivery_status = models.CharField(max_length=30, choices=DELIVERY_CHOICES, default="Processing")
 
     def __str__(self):
-        return f"{self.quantity} x {self.product.name}"
+        return f"{self.product.name} x {self.quantity}"
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="images")

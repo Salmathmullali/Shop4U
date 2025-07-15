@@ -1,13 +1,28 @@
-<h2>My Delivered Orders</h2>
-{% for order in orders %}
-    <h4>Order #{{ order.id }}</h4>
-    <ul>
-        {% for item in order.items.all %}
-            <li>
-                {{ item.product.name }} - Qty: {{ item.quantity }}
-                <a href="{% url 'product_detail' item.product.id %}">Review this product</a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endfor %}
+<div class="container mt-4">
+    <h2>My Delivered Orders</h2>
 
+    {% for order in orders %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <strong>Order #{{ order.id }}</strong> - Placed on {{ order.created_at|date:"F j, Y" }}
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for item in order.items.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ item.product.name }}</strong> - Qty: {{ item.quantity }}<br>
+                            <small class="text-muted">Status: {{ item.delivery_status }}</small>
+                        </div>
+                        {% if item.delivery_status == "Delivered" %}
+                            <a href="{% url 'product_detail' item.product.id %}" class="btn btn-sm btn-primary">Review Product</a>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No delivered items yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% empty %}
+        <p>You haven't received any delivered products yet.</p>
+    {% endfor %}
+</div>
