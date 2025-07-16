@@ -233,7 +233,7 @@ def mark_delivered(request, order_id):
 #@login_required
 def my_orders(request):
     if not request.user.is_authenticated:
-        return render(request, "error.html", {"message": "Login required to view this page."})
+        return redirect('login')  # This assumes your login URL is named "login"
 
     delivered_items = OrderItem.objects.filter(delivery_status="Delivered")
     orders = Order.objects.filter(user=request.user).prefetch_related(
@@ -241,7 +241,6 @@ def my_orders(request):
     ).distinct()
 
     return render(request, "my_orders.html", {"orders": orders})
-
 def search_products(request):
     query = request.GET.get('q', '')
     results = []
