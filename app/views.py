@@ -11,7 +11,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
-from django.shortcuts import redirect
 from django.db.models import Prefetch
 
 def home(request):
@@ -298,7 +297,7 @@ def register_view(request):
             return redirect('login')
     else:
         form = RegisterForm()
-    return render(request, "auth/register.html", {"form": form})
+    return render(request, "register.html", {"form": form})
 
 def login_view(request):
     if request.method == "POST":
@@ -313,7 +312,7 @@ def login_view(request):
             elif user.is_staff:
                 return redirect('staff_dashboard')
             else:
-                return redirect('user_dashboard')
+                return redirect('user_dashboard')  # ✅ fixed
         else:
             messages.error(request, "Invalid credentials")
     return render(request, "login.html")
@@ -323,9 +322,22 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-@login_required
 def user_dashboard(request):
-    return render(request, "dashboard/user.html")
+    user = request.user
+
+    orders = Order.objects.filter(user=user)
+    total_orders = orders.count()
+    delivered_orders = orders.filter(is_completed=True).count()
+    pending_orders = orders.filter(is_completed=False).count()
+
+    context = {
+        "user": user,
+        "total_orders": total_orders,
+        "delivered_orders": delivered_orders,
+        "pending_orders": pending_orders
+    }
+
+    return render(request, "user_dashboard.html", context)
 
 # @staff_member_required
 def staff_dashboard(request):
