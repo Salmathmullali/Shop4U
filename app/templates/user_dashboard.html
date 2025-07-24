@@ -18,8 +18,8 @@
         </div>
         <div class="card-body">
           <p><strong>Email:</strong> {{ user.email }}</p>
-          <p><strong>Phone:</strong> {{ user.userprofile.phone }}</p>
-          <p><strong>Address:</strong> {{ user.userprofile.address }}</p>
+          <p><strong>Phone:</strong> {{ user.profile.phone }}</p>
+          <p><strong>Address:</strong> {{ user.profile.address }}</p>
           <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary btn-sm">Edit Profile</a>
         </div>
       </div>

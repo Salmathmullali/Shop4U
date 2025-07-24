@@ -13,6 +13,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 from django.db.models import Prefetch
 from django.contrib.auth.models import User
+from django.http import HttpResponse
+
 
 def home(request):
     return render(request, "index.html")
@@ -358,10 +360,19 @@ def staff_dashboard(request):
     orders = Order.objects.all().order_by('-created_at')
     return render(request, "staff_dashboard.html", {"orders": orders})
 
-@login_required
+@staff_member_required
 def admin_dashboard(request):
-    return render(request, "dashboard/admin.html")
+    total_users = User.objects.count()
+    total_products = Products.objects.count()
+    pending_orders = Order.objects.filter(is_completed=False, delivered=False).count()
+    delivered_orders = Order.objects.filter(delivered=True).count()
 
+    return render(request, 'admin_dashboard.html', {
+        'total_users': total_users,
+        'total_products': total_products,
+        'pending_orders': pending_orders,
+        'delivered_orders': delivered_orders,
+    })
 @require_POST
 # @staff_member_required
 def update_delivery_status(request, order_id):
@@ -374,7 +385,7 @@ def update_delivery_status(request, order_id):
 def edit_profile(request):
     user = request.user
     try:
-        profile = user.userprofile
+        profile = user.profile
     except Profile.DoesNotExist:
         profile = Profile.objects.create(user=user)
 
@@ -389,7 +400,27 @@ def edit_profile(request):
         user_form = EditUserForm(instance=user)
         profile_form = EditProfileForm(instance=profile)
 
-    return render(request, 'edit_user.html', {
+    return render(request, 'edit_profile.html', {
         'user_form': user_form,
         'profile_form': profile_form
     })
+
+@staff_member_required
+def manage_users(request):
+    return HttpResponse("Manage Users Page (to be implemented)")
+
+@staff_member_required
+def manage_products(request):
+    return HttpResponse("Manage Products Page (to be implemented)")
+
+@staff_member_required
+def manage_orders(request):
+    return HttpResponse("Manage Orders Page (to be implemented)")
+
+@staff_member_required
+def manage_categories(request):
+    return HttpResponse("Manage Categories Page (to be implemented)")
+
+@staff_member_required
+def approve_products(request):
+    return HttpResponse("Approve Products Page (to be implemented)")
