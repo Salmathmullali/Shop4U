@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 from django.db.models import Prefetch
+from django.contrib.auth.models import User
 
 def home(request):
     return render(request, "index.html")
@@ -288,34 +289,47 @@ def live_search(request):
 
 def register_view(request):
     if request.method == "POST":
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            messages.success(request, "Registration successful. Please log in.")
-            return redirect('login')
-    else:
-        form = RegisterForm()
-    return render(request, "register.html", {"form": form})
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+
+        if password1 != password2:
+            messages.error(request, "Passwords do not match")
+            return render(request, "register.html")
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+            return render(request, "register.html")
+
+        user = User.objects.create_user(username=username, email=email, password=password1)
+        user.save()
+        messages.success(request, "Account created successfully. Please login.")
+        return redirect("login")
+
+    return render(request, "register.html")
+
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            # Redirect based on role
             if user.is_superuser:
-                return redirect('admin_dashboard')
+                return redirect("admin_dashboard")
             elif user.is_staff:
-                return redirect('staff_dashboard')
+                return redirect("staff_dashboard")
             else:
-                return redirect('user_dashboard')  # ✅ fixed
+                return redirect("user_dashboard")
         else:
             messages.error(request, "Invalid credentials")
+            return render(request, "login.html")
     return render(request, "login.html")
+
 
 @login_required
 def logout_view(request):
