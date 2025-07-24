@@ -1,5 +1,5 @@
 from django import forms
-from .models import ProductReview
+from .models import ProductReview, Profile
 from django.contrib.auth.models import User
 
 class CheckoutForm(forms.Form):
@@ -21,3 +21,13 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['phone', 'address']

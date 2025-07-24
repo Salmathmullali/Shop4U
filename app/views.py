@@ -4,7 +4,7 @@ from .forms import CheckoutForm
 from .models import *
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from .forms import ReviewForm, RegisterForm
+from .forms import ReviewForm, RegisterForm, EditUserForm, EditProfileForm
 from django.db.models import Avg
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
@@ -369,3 +369,27 @@ def update_delivery_status(request, order_id):
     order.is_completed = True
     order.save()
     return redirect('staff_dashboard')
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    try:
+        profile = user.userprofile
+    except Profile.DoesNotExist:
+        profile = Profile.objects.create(user=user)
+
+    if request.method == 'POST':
+        user_form = EditUserForm(request.POST, instance=user)
+        profile_form = EditProfileForm(request.POST, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('user_dashboard')  # redirect after saving
+    else:
+        user_form = EditUserForm(instance=user)
+        profile_form = EditProfileForm(instance=profile)
+
+    return render(request, 'edit_user.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })

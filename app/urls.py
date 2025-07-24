@@ -27,7 +27,8 @@ urlpatterns= [
     path('user_dashboard/', views.user_dashboard, name='user_dashboard'),
     path('staff_dashboard/', views.staff_dashboard, name='staff_dashboard'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path("update-delivery/<int:order_id>/", views.update_delivery_status, name="update_delivery_status")
+    path("update-delivery/<int:order_id>/", views.update_delivery_status, name="update_delivery_status"),
+    path('edit-profile/', views.edit_profile, name='edit_profile')
 
 
 

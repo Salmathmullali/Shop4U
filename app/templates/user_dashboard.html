@@ -7,29 +7,45 @@
 </head>
 <body>
 <div class="container mt-5">
-  <h2>Welcome, {{ user.username }}!</h2>
-  <hr>
+  <h2 class="mb-4">Welcome, {{ user.username }}!</h2>
 
   <div class="row">
-    <div class="col-md-6">
-      <h4>Account Info</h4>
-      <!-- <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Phone:</strong> {{ profile.phone }}</p>
-      <p><strong>Address:</strong> {{ profile.address }}</p> -->
-      <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+    <!-- Account Info -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          Account Info
+        </div>
+        <div class="card-body">
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Phone:</strong> {{ user.userprofile.phone }}</p>
+          <p><strong>Address:</strong> {{ user.userprofile.address }}</p>
+          <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+        </div>
+      </div>
     </div>
 
-    <div class="col-md-6">
-      <h4>Order Summary</h4>
-      <p><strong>Total Orders:</strong> {{ total_orders }}</p>
-      <p><strong>Delivered:</strong> {{ delivered_orders }}</p>
-      <p><strong>Pending:</strong> {{ pending_orders }}</p>
-      <a href="{% url 'my_orders' %}" class="btn btn-outline-success btn-sm">View Orders</a>
+    <!-- Order Summary -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+          Order Summary
+        </div>
+        <div class="card-body">
+          <p><strong>Total Orders:</strong> {{ total_orders }}</p>
+          <p><strong>Delivered:</strong> {{ delivered_orders }}</p>
+          <p><strong>Pending:</strong> {{ pending_orders }}</p>
+          <a href="{% url 'my_orders' %}" class="btn btn-outline-success btn-sm">View Orders</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <hr>
-  <a href="{% url 'wishlist' %}" class="btn btn-secondary">Go to Wishlist</a>
+  <!-- Wishlist -->
+  <div class="text-center mt-4">
+    <a href="{% url 'view_wishlist' %}" class="btn btn-secondary">Go to Wishlist</a>
+  </div>
 </div>
 </body>
 </html>
+
