@@ -63,7 +63,7 @@
 								<li class="current-list-item"><a href="#">Home</a>
 									
 								</li>
-								<li><a href="{% url 'register' %}">Register</a></li>
+								<li><a href="{% url 'register' %}" >Register</a></li>
 								<li><a href="{% url 'collections' %}">Collections</a>
 									
 								</li>
@@ -119,7 +119,8 @@
 <body>
   
 
-<div class="login-box">
+<div class="login-box" 
+ style="background-color: #d7d8da; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
   <h2 class="text-center mb-4">Login</h2>
   <form method="POST">
   {% csrf_token %}
@@ -137,7 +138,8 @@
     <label for="password" class="form-label">Password</label>
     <input type="password" name="password" class="form-control" required>
   </div>
-  <button type="submit" class="btn btn-primary w-100">Login</button>
+  <button type="submit" class="btn btn-primary w-100"
+  style="background-color: rgb(255, 123, 0); color: white; border: none;">Login</button>
 </form>
   <p class="text-center mt-3">Don't have an account? <a href="{% url 'register' %}">Register</a></p>
 </div>

@@ -41,19 +41,26 @@
     <h1 class="fw-light mb-2">Best Sellers</h1>
     <p class="lead text-muted mb-4">Our most popular products based on sales. Updated hourly.</p>
     <p>
-        <a href="#" class="btn btn-primary my-2">Already User</a>
+        <a href="{% url 'login' %}" class="btn btn-primary my-2"
+        style="background-color: rgb(255, 123, 0); color: white; border: none;">Already User</a>
         <a href="{% url 'register' %}" class="btn btn-secondary my-2">Register</a>
-    </p>
+    </p><br><br><br>
     <div class="row">
-        {% for item in catagory %}
-        <div class="col-md-4 mb-4">
-            <div class="product-card p-3">
-                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="product-img mb-3">
-                <h5>{{ item.name }}</h5>
-                <p class="text-muted">{{ item.description|truncatewords:20 }}</p>
-                <a href="{% url 'collection_products' item.id %}" class="btn btn-primary w-100">View Products</a>
-            </div>
+       {% for item in catagory %}
+    <div class="col-md-4 mb-4">
+        <div class="product-card p-3">
+            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="product-img mb-3">
+            <h5>{{ item.name }}</h5>
+            <p class="text-muted">{{ item.description|truncatewords:20 }}</p>
+            <a href="{% url 'collection_products' item.id %}" 
+               class="btn w-100" 
+               style="background-color: rgb(255, 123, 0); color: white; border: none;">
+               View Products
+            </a>
         </div>
+    </div>
+
+
         {% empty %}
         <p class="text-center text-muted">No categories available.</p>
         {% endfor %}

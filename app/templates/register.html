@@ -118,7 +118,8 @@
 </head>
 <body>
 
-<div class="register-box">
+<div class="register-box"
+ style="background-color: #d7d8da; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
   <h2 class="text-center mb-4">Create Account</h2>
   <form method="POST" action="">
     {% csrf_token %}
@@ -139,7 +140,8 @@
       <label for="password2" class="form-label">Confirm Password</label>
       <input type="password" name="password2" class="form-control" required>
     </div>
-    <button type="submit" class="btn btn-primary w-100">Register</button>
+    <button type="submit" class="btn btn-primary w-100"
+    style="background-color: rgb(255, 123, 0); color: white; border: none;">Register</button>
   </form>
   <p class="text-center mt-3">Already have an account? <a href="{% url 'login' %}">Login</a></p>
 </div>
