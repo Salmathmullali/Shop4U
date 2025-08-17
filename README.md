@@ -1,8 +1,8 @@
-Why Shop4U?
+<h2>Why Shop4U?</h2>
 
 Shop4U is an online e-commerce platform built to provide fresh fruits directly to customers with ease and trust. In today’s fast lifestyle, people often struggle to find quality fruits at reasonable prices. Shop4U solves this problem by offering:
 
-Convenience – Order fresh fruits anytime from home.
+<li>Convenience – Order fresh fruits anytime from home.
 
 Quality Assurance – Verified vendors ensure top-grade produce.
 
@@ -12,7 +12,7 @@ Customer-Friendly Design – Easy navigation, product search, and fast checkout.
 
 Trust & Transparency – Ratings, reviews, and delivery tracking included.
 
-In short, Shop4U is designed to make healthy living more accessible, simple, and reliable.
+In short, Shop4U is designed to make healthy living more accessible, simple, and reliable.</li>
 
 Tech Stack
 
