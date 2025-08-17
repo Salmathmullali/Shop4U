@@ -54,6 +54,9 @@ In short, Shop4U is designed to make healthy living more accessible, simple, and
 <h3>Features</h3>
 
 <h4>Shop4U comes with a wide range of features to ensure the best shopping experience:</h4>
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/1c438bf0-c978-4064-9a85-47b60b588e1a"><br><br>
 
 <h4>User Features</h4>
 
@@ -70,6 +73,10 @@ In short, Shop4U is designed to make healthy living more accessible, simple, and
 <li>Track Orders – see delivery status and updates</li>
 
 <li>Profile Management – update address, phone number, etc.</li>
+<br><br>
+<img src="https://github.com/user-attachments/assets/9780c84d-b391-410d-9923-b001ebd3be13"><br><br>
+
+<img width="921" height="524" alt="Screenshot 2025-08-17 133439" src="https://github.com/user-attachments/assets/bd816b0a-3a42-468a-b8df-8dc5d76a94bf" /><br><br>
 
 <h4>Admin Features</h4>
 
@@ -78,6 +85,9 @@ In short, Shop4U is designed to make healthy living more accessible, simple, and
 <li>Manage categories, products, and orders</li>
 
 <li>View sales and customer insights</li>
+<br><br>
+<img width="1651" height="516" alt="Screenshot 2025-08-17 133124" src="https://github.com/user-attachments/assets/51293be2-e8dc-4033-a28e-c170c1d6cb4c" /><br><br>
+
 
 <h4>Delivery Agent Features</h4>
 
@@ -87,8 +97,9 @@ In short, Shop4U is designed to make healthy living more accessible, simple, and
 
 <li>Future Enhancements</li>
 
-<li>Online payment gateway integration</li>
+<li>Online payment gateway integration</li><br><br>
 
+<img width="1707" height="611" alt="Screenshot 2025-08-17 133017" src="https://github.com/user-attachments/assets/6d16aec3-5da1-4d47-9ed9-06af890edb0c" /><br><br>
 
 
 
