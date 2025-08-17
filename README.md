@@ -2,99 +2,99 @@
 
 Shop4U is an online e-commerce platform built to provide fresh fruits directly to customers with ease and trust. In today’s fast lifestyle, people often struggle to find quality fruits at reasonable prices. Shop4U solves this problem by offering:
 
-<li>Convenience – Order fresh fruits anytime from home.
+<li>Convenience – Order fresh fruits anytime from home.</li>
 
-Quality Assurance – Verified vendors ensure top-grade produce.
+<li>Quality Assurance – Verified vendors ensure top-grade produce.</li>
 
-Variety – Different fruit categories and seasonal collections available.
+<li>Variety – Different fruit categories and seasonal collections available.</li>
 
-Customer-Friendly Design – Easy navigation, product search, and fast checkout.
+<li>Customer-Friendly Design – Easy navigation, product search, and fast checkout.</li>
 
-Trust & Transparency – Ratings, reviews, and delivery tracking included.
+<li>Trust & Transparency – Ratings, reviews, and delivery tracking included.</li>
 
-In short, Shop4U is designed to make healthy living more accessible, simple, and reliable.</li>
+In short, Shop4U is designed to make healthy living more accessible, simple, and reliable.<br><br>
 
-Tech Stack
+<h3>Tech Stack</h3>
 
-The platform is built with a modern and scalable stack:
+<h4>The platform is built with a modern and scalable stack:</h4>
 
-Frontend:
+<h4>Frontend:</h4>
 
-HTML5, CSS3, Bootstrap for responsive UI
+<li>HTML5, CSS3, Bootstrap for responsive UI</li>
 
-JavaScript for interactive components
+<li>JavaScript for interactive components</li>
 
-Dynamic product cards with hover effects and category-based display
+<li>Dynamic product cards with hover effects and category-based display</li><br>
 
-Backend:
+<h4>Backend:</h4>
 
-Django (Python) – MVC structure for scalable e-commerce logic
+<li>Django (Python) – MVC structure for scalable e-commerce logic</li>
 
-Django authentication for role-based access (Admin, Vendor, Customer)
+<li>Django authentication for role-based access (Admin, Vendor, Customer)</li>
 
-REST API integration for search and product filtering
+<li>REST API integration for search and product filtering</li><br>
 
-Database:
+<h4>Database:</h4>
 
-MySQL – to store users, products, categories, orders, reviews, and ratings
+<li>MySQL – to store users, products, categories, orders, reviews, and ratings</li>
 
-Widgets & Extras:
+<li>Widgets & Extras:</li>
 
-Image carousel for banners & fruit categories
+<li>Image carousel for banners & fruit categories</li>
 
-Product filter by category & search with live suggestions
+<li>Product filter by category & search with live suggestions</li>
 
-Wishlist & star rating system
+<li>Wishlist & star rating system</li>
 
 
 
-Features
+<h3>Features</h3>
 
-Shop4U comes with a wide range of features to ensure the best shopping experience:
+<h4>Shop4U comes with a wide range of features to ensure the best shopping experience:</h4>
 
-User Features
+<h4>User Features</h4>
 
-Easy sign-up/login with role-based dashboards
+<li>Easy sign-up/login with role-based dashboards</li>
 
-Browse fruits by categories
+<li>Browse fruits by categories</li>
 
-Wishlist to save favorite fruits
+<li>Wishlist to save favorite fruits</li>
 
-Star ratings & reviews for purchased products
+<li>Star ratings & reviews for purchased products</li>
 
-Cart & Checkout with Cash-on-Delivery option
+<li>Cart & Checkout with Cash-on-Delivery option</li>
 
-Track Orders – see delivery status and updates
+<li>Track Orders – see delivery status and updates</li>
 
-Profile Management – update address, phone number, etc.
+<li>Profile Management – update address, phone number, etc.</li>
 
-Admin Features
+<h4>Admin Features</h4>
 
-Approve/reject products and vendors
+<li>Approve/reject products and vendors</li>
 
-Manage categories, products, and orders
+<li>Manage categories, products, and orders</li>
 
-View sales and customer insights
+<li>View sales and customer insights</li>
 
-Delivery Agent Features
+<h4>Delivery Agent Features</h4>
 
-Update delivery status (In Transit / Delivered)
+<li>Update delivery status (In Transit / Delivered)</li>
 
-Ensure smooth order fulfillment
+<li>Ensure smooth order fulfillment</li>
 
-Future Enhancements
+<li>Future Enhancements</li>
 
-Online payment gateway integration
+<li>Online payment gateway integration</li>
 
-AI-powered fruit recommendation system
+<li>AI-powered fruit recommendation system</li>
 
-Discount coupons & offers system
 
-Multi-language support
 
-Project Setup (Quick Start)
-git clone <repo-link>
-cd shop4u
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
+
+
+<h3>Project Setup (Quick Start)</h3><br>
+git clone <(https://github.com/Salmathmullali/Shop4U)><br>
+cd shop4u<br>
+pip install -r requirements.txt<br>
+python manage.py migrate<br>
+python manage.py runserver<br>
