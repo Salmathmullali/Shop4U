@@ -112,3 +112,4 @@ cd shop4u<br>
 pip install -r requirements.txt<br>
 python manage.py migrate<br>
 python manage.py runserver<br>
+shop4u app made by easy usage. people can easily use and understand this app . this app is user friendly
